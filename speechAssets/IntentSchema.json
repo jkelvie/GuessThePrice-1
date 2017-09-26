@@ -1,0 +1,46 @@
+{
+  "intents": [
+    {
+      "intent": "GetOnePlayer"
+    },
+    {
+      "intent": "GetPlayerNumber",
+      "slots": [
+        {
+          "name": "PlayerQuantity",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+    {
+      "intent": "GetContestantName",
+      "slots": [
+        {
+          "name": "PlayerName",
+          "type": "AMAZON.US_FIRST_NAME"
+        }
+      ]
+    },
+    {
+      "intent": "GetContestantPrice",
+      "slots": [
+        {
+          "name": "Price",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+    {
+      "intent": "ShowLeaderboard"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}

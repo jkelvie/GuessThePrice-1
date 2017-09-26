@@ -1,0 +1,15 @@
+{
+  "name": "GuessThePrice",
+  "version": "1.0.0",
+  "description": "Guess The Price as closer as you can Alexa Skill",
+  "main": "index.js",
+  "dependencies": {
+    "alexa-sdk": "^1.0.12",
+    "bespoken-tools": "^1.0.5",
+    "dotenv": "^4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bespoken/guessThePrice.git"
+  }
+}

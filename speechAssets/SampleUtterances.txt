@@ -1,0 +1,16 @@
+GetPlayerNumber {PlayerQuantity}
+GetPlayerNumber There are {PlayerQuantity} players
+GetOnePlayer Just one
+GetOnePlayer One player
+GetOnePlayer One
+GetContestantName My name is {PlayerName}
+GetContestantName I am {PlayerName}
+GetContestantName {PlayerName}
+GetContestantPrice My price is {Price}
+GetContestantPrice I think is {Price}
+GetContestantPrice I choose {Price}
+GetContestantPrice {Price} dollars
+GetContestantPrice {Price}
+GetContestantPrice My price is {Price} dollars
+GetContestantPrice I think is {Price} dollars
+GetContestantPrice I choose {Price} dollars
