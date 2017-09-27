@@ -13,21 +13,9 @@ index.js.map
 codeship.aes
 docker/aws.env
 
-# Do not track the generated javascript and map files from typescript
-bin/**/*.js
-bin/**/*.map
-lib/**/*.js
-lib/**/*.map
-test/**/*.js
-test/**/*.map
-test/resources/.bst/config
-
 .nyc_output/
 
 **/.DS_Store
-
-typings/globals/
-typings/modules/
 
 # generated docs
 site/
