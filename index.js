@@ -44,9 +44,10 @@ const askPlayerName = (alexaContext, playerQuantity) => {
     alexaContext.emit(':ask', askPlayerName, alexaContext.t("REPROMT_FIRST_PLAYER"));
 };
 
+
 const startModeHandlers = Alexa.CreateStateHandler(states.START_MODE, {
     'GetPlayerNumber': function () {
-        const playerQuantity = this.event.request.intent.slots.PlayerQuantity.value;
+        const playerQuantity = this.event.request.intent.slots.Number.value;
 
         this.attributes["playerQuantity"] = playerQuantity;
         askPlayerName(this, playerQuantity);
@@ -58,12 +59,18 @@ const startModeHandlers = Alexa.CreateStateHandler(states.START_MODE, {
 
         askPlayerName(this, 1);
     },
+    'GetANumber': function() {
+        const playerQuantity = this.event.request.intent.slots.Number.value;
+
+        this.attributes["playerQuantity"] = playerQuantity;
+        askPlayerName(this, playerQuantity);
+    },
     'Unhandled': function () {
         this.emit(":ask", this.t("UNHANDLED_QUANTITY"), this.t("UNHANDLED_QUANTITY_REPROMT"));
     },
     'AMAZON.HelpIntent': function () {
-        var speechOutput = this.t("HELP_MESSAGE");
-        var reprompt = this.t("HELP_MESSAGE");
+        const speechOutput = this.t("HELP_MESSAGE");
+        const reprompt = this.t("HELP_MESSAGE");
         this.emit(':ask', speechOutput, reprompt);
     },
     'AMAZON.CancelIntent': function () {
@@ -117,8 +124,8 @@ const setupUsersHandlers = Alexa.CreateStateHandler(states.SETUP_USERS, {
         this.emit(":ask", this.t("UNHANDLED_USER_NAME"), this.t("UNHANDLED_USER_NAME_REPROMT"));
     },
     'AMAZON.HelpIntent': function () {
-        var speechOutput = this.t("HELP_MESSAGE");
-        var reprompt = this.t("HELP_MESSAGE");
+        const speechOutput = this.t("HELP_MESSAGE");
+        const reprompt = this.t("HELP_MESSAGE");
         this.emit(':ask', speechOutput, reprompt);
     },
     'AMAZON.CancelIntent': function () {
@@ -129,83 +136,90 @@ const setupUsersHandlers = Alexa.CreateStateHandler(states.SETUP_USERS, {
     }
 });
 
-const gameRoundHandlers = Alexa.CreateStateHandler(states.GAME_ROUND, {
-    'GetContestantPrice': function () {
-        const contestantPrice = this.event.request.intent.slots.Price.value;
-        const lastProduct = this.attributes["currentProduct"];
-        const currentPlayerIndex = this.attributes["currentPlayerGame"];
-        const currentPlayer = this.attributes["players"][currentPlayerIndex];
-        const playerQuantity = this.attributes["playerQuantity"];
-        const yourPriceIsSpeech = (playerQuantity > 1 ? currentPlayer.name + ", you" : " You") +
-            " said " + contestantPrice +  " , the actual price was " + lastProduct.price + " dollars. ";
-        const score = game.getScore(contestantPrice, lastProduct.price);
-        const currentRound = this.attributes["currentRound"];
+const evaluateUserResponse = function (alexaContext) {
+    const contestantPrice = alexaContext.event.request.intent.slots.Number.value;
+    const lastProduct = alexaContext.attributes["currentProduct"];
+    const currentPlayerIndex = alexaContext.attributes["currentPlayerGame"];
+    const currentPlayer = alexaContext.attributes["players"][currentPlayerIndex];
+    const playerQuantity = alexaContext.attributes["playerQuantity"];
+    const yourPriceIsSpeech = (playerQuantity > 1 ? currentPlayer.name + ", you" : " You") +
+        " said " + contestantPrice +  " , the actual price was " + lastProduct.price + " dollars. ";
+    const score = game.getScore(contestantPrice, lastProduct.price);
+    const currentRound = alexaContext.attributes["currentRound"];
 
-        if (currentRound > 0) {
-            this.attributes["players"][currentPlayerIndex]["score"].push(score);
-        } else {
-            this.attributes["players"][currentPlayerIndex]["score"] = [score];
-        }
+    if (currentRound > 0) {
+        alexaContext.attributes["players"][currentPlayerIndex]["score"].push(score);
+    } else {
+        alexaContext.attributes["players"][currentPlayerIndex]["score"] = [score];
+    }
 
-        const productChoice = product.getProduct();
+    const productChoice = product.getProduct();
 
-        const endOfRound = currentPlayerIndex + 1 >= playerQuantity;
-        let nextQuestion;
-        if (endOfRound) {
-            this.attributes["currentRound"] = currentRound + 1;
-            if (currentRound + 1 >= 3) {
-                this.handler.state = states.TELL_SCORE;
-                if (this.attributes["playerQuantity"] === 1) {
-                    const finalPlayerScoreList = this.attributes["players"][0]["score"];
-                    const finalScore = finalPlayerScoreList.reduce((acc, val) => acc + val);
-                    this.emit(':tell', "Game ended, your final score was: " + finalScore);
-                } else {
-                    const players = this.attributes["players"];
-                    const winner = players.reduce((result, player) => {
-                        const playerScore = player.score.reduce((acc, val) => acc + val);
-                        if (!result.finalScore || result.finalScore < playerScore) {
-                            result = Object.assign({}, player);
-                            result.finalScore = playerScore;
-                        }
-                        return result;
-                    }, {});
-                    const finalResults =
-                        "Game ended, the winner is " + winner.name + " with " + winner.finalScore + " points. Congratulations!";
-                    this.emit(':tell', finalResults);
-                }
+    const endOfRound = currentPlayerIndex + 1 >= playerQuantity;
+    let nextQuestion;
+    if (endOfRound) {
+        alexaContext.attributes["currentRound"] = currentRound + 1;
+        if (currentRound + 1 >= 3) {
+            alexaContext.handler.state = states.TELL_SCORE;
+            if (alexaContext.attributes["playerQuantity"] == 1) {
+                const finalPlayerScoreList = alexaContext.attributes["players"][0]["score"];
+                const finalScore = finalPlayerScoreList.reduce((acc, val) => acc + val);
+                alexaContext.emit(':tell', "Game ended, your final score was: " + finalScore);
+            } else {
+                const players = alexaContext.attributes["players"];
+                const winner = players.reduce((result, player) => {
+                    const playerScore = player.score.reduce((acc, val) => acc + val);
+                    if (!result.finalScore || result.finalScore < playerScore) {
+                        result = Object.assign({}, player);
+                        result.finalScore = playerScore;
+                    }
+                    return result;
+                }, {});
+                const finalResults =
+                    "Game ended, the winner is " + winner.name + " with " + winner.finalScore + " points. Congratulations!";
+                alexaContext.emit(':tell', finalResults);
             }
         }
-        if (this.attributes["playerQuantity"] === 1) {
-            nextQuestion = "Your next product is ";
-        } else {
-            const nextPlayerIndex = !endOfRound ?  currentPlayerIndex + 1 : 0;
-            const nextPlayer = this.attributes["players"][nextPlayerIndex];
-            this.attributes["currentPlayerGame"] = nextPlayerIndex;
-            nextQuestion = "Now is " + nextPlayer.name + " turn. Your next product is ";
-        }
+    }
+    if (alexaContext.attributes["playerQuantity"] == 1) {
+        nextQuestion = "Your next product is ";
+    } else {
+        const nextPlayerIndex = !endOfRound ?  currentPlayerIndex + 1 : 0;
+        const nextPlayer = alexaContext.attributes["players"][nextPlayerIndex];
+        alexaContext.attributes["currentPlayerGame"] = nextPlayerIndex;
+        nextQuestion = "Now is " + nextPlayer.name + " turn. Your next product is ";
+    }
 
-        this.attributes["currentProduct"] = productChoice;
+    alexaContext.attributes["currentProduct"] = productChoice;
 
-        nextQuestion += productChoice.name + ", " + productChoice.description;
-        nextQuestion += "   " + getGuessThePricePhrase(this);
+    nextQuestion += productChoice.name + ", " + productChoice.description;
+    nextQuestion += "   " + getGuessThePricePhrase(alexaContext);
 
-        const imageObj = {
-            smallImageUrl: productChoice.image,
-            largeImageUrl: productChoice.image
-        };
+    const imageObj = {
+        smallImageUrl: productChoice.image,
+        largeImageUrl: productChoice.image
+    };
 
-        const speechOutput = yourPriceIsSpeech + this.t("SCORE") + score + " points. " + nextQuestion;
+    const speechOutput = yourPriceIsSpeech + alexaContext.t("SCORE") + score + " points. " + nextQuestion;
 
-        const repromt = this.t("GUESS_THE_PRICE_REPROMT") + productChoice.name;
+    const repromt = alexaContext.t("GUESS_THE_PRICE_REPROMT") + productChoice.name;
 
-        this.emit(':askWithCard', speechOutput, repromt, productChoice.name, productChoice.description, imageObj);
+    alexaContext.emit(':askWithCard', speechOutput, repromt, productChoice.name, productChoice.description, imageObj);
+};
+
+const gameRoundHandlers = Alexa.CreateStateHandler(states.GAME_ROUND, {
+    'GetContestantPrice': function () {
+        evaluateUserResponse(this);
+    },
+    'GetANumber': function () {
+        evaluateUserResponse(this);
     },
     'Unhandled': function () {
         this.emit(":ask", this.t("UNHANDLED_PRICE"), this.t("UNHANDLED_PRICE_REPROMT"));
     },
     'AMAZON.HelpIntent': function () {
-        var speechOutput = this.t("HELP_MESSAGE");
-        var reprompt = this.t("HELP_MESSAGE");
+        const speechOutput = this.t("HELP_MESSAGE");
+        const reprompt = this.t("HELP_MESSAGE");
         this.emit(':ask', speechOutput, reprompt);
     },
     'AMAZON.CancelIntent': function () {
@@ -217,10 +231,10 @@ const gameRoundHandlers = Alexa.CreateStateHandler(states.GAME_ROUND, {
 });
 
 
-var handlers = {
+const handlers = {
     'AMAZON.HelpIntent': function () {
-        var speechOutput = this.t("HELP_MESSAGE");
-        var reprompt = this.t("HELP_MESSAGE");
+        const speechOutput = this.t("HELP_MESSAGE");
+        const reprompt = this.t("HELP_MESSAGE");
         this.emit(':ask', speechOutput, reprompt);
     },
     'AMAZON.CancelIntent': function () {

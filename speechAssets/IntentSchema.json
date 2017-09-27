@@ -4,10 +4,19 @@
       "intent": "GetOnePlayer"
     },
     {
+      "intent": "GetANumber",
+      "slots": [
+        {
+          "name": "Number",
+          "type": "AMAZON.NUMBER"
+        }
+      ]
+    },
+    {
       "intent": "GetPlayerNumber",
       "slots": [
         {
-          "name": "PlayerQuantity",
+          "name": "Number",
           "type": "AMAZON.NUMBER"
         }
       ]
@@ -25,7 +34,7 @@
       "intent": "GetContestantPrice",
       "slots": [
         {
-          "name": "Price",
+          "name": "Number",
           "type": "AMAZON.NUMBER"
         }
       ]
