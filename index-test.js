@@ -31,10 +31,6 @@ describe("DefaultSkill Test", function() {
                 assert.include(reply.response.outputSpeech.ssml, "the actual price was");
                 done();
             });
-
-
-
-
         });
     });
 });

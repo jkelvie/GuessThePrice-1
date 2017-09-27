@@ -12,6 +12,9 @@
     "type": "git",
     "url": "git://github.com/bespoken/guessThePrice.git"
   },
+  "scripts": {
+    "test": "mocha *-test.js"
+  },
   "devDependencies": {
     "chai": "^4.1.2",
     "mocha": "^3.5.3",
