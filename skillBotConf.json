@@ -1,0 +1,9 @@
+{
+  "id": "amzn1.ask.skill.612ef5f8-697a-43ab-ac3c-2523a0617b7b",
+  "imageURL": "https://bespoken.io/wp-content/uploads/Bespoken-Logo-RGB-e1500333659572.png",
+  "intentSchemaFile": "speechAssets/IntentSchema.json",
+  "sampleUtterancesFile": "speechAssets/SampleUtterances.txt",
+  "invocationName": "Guess The Price",
+  "url": "https://loving-king-KyVeoO.bespoken.link",
+  "name": "Guess The Price"
+}
