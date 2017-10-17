@@ -25,3 +25,7 @@ site/
 !test/resources/exampleProject/*
 !test/resources/deployProject/*
 test/resources/ContentPromoPromptCopy.m4a
+
+# Babel and Lambda generation outputs
+dist/
+artifact.zip
