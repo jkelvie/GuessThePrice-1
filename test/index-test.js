@@ -16,15 +16,19 @@ describe("DefaultSkill Test", function() {
 
             let reply = await alexa.launch();
             assert.include(reply.response.outputSpeech.ssml, "Welcome to guess the price");
-            reply = await alexa.utter("2");
+
+            reply = await alexa.utter("two");
             assert.include(reply.response.outputSpeech.ssml, "what is your name");
             assert.include(reply.response.outputSpeech.ssml, "contestant one");
+
             reply = await alexa.utter("john");
             assert.include(reply.response.outputSpeech.ssml, "what is your name");
             assert.include(reply.response.outputSpeech.ssml, "Contestant 2");
+
             reply = await alexa.utter("juan");
             assert.include(reply.response.outputSpeech.ssml, "let's start the game");
             assert.include(reply.response.outputSpeech.ssml, "Guess the price");
+
             reply = await alexa.filter(function (request) {
                 console.log("Request: " + JSON.stringify(request, null, 2));
             }).utter("200 dollars");
@@ -40,15 +44,19 @@ describe("DefaultSkill Test", function() {
 
             const launchResponse = await alexa.launch();
             assert.include(launchResponse.response.outputSpeech.ssml, "Welcome to guess the price");
+
             const playerOneResponse = await alexa.utter("2");
             assert.include(playerOneResponse.response.outputSpeech.ssml, "what is your name");
             assert.include(playerOneResponse.response.outputSpeech.ssml, "contestant one");
+
             const playerTwoResponse = await alexa.utter("john");
             assert.include(playerTwoResponse.response.outputSpeech.ssml, "what is your name");
             assert.include(playerTwoResponse.response.outputSpeech.ssml, "Contestant 2");
+
             const gameStartResponse =  await alexa.utter("juan");
             assert.include(gameStartResponse.response.outputSpeech.ssml, "let's start the game");
             assert.include(gameStartResponse.response.outputSpeech.ssml, "Guess the price");
+
             const priceGuessResponse = await alexa.utter("200");
             assert.include(priceGuessResponse.response.outputSpeech.ssml, "the actual price was");
         });
@@ -64,16 +72,21 @@ describe("DefaultSkill Test", function() {
 
             const launchResponse = await alexa.launch();
             assert.include(launchResponse.response.outputSpeech.ssml, "Welcome to guess the price");
+
             const singlePlayerResponse = await alexa.utter("1");
             assert.include(singlePlayerResponse.response.outputSpeech.ssml, "tell us your name");
+
             const firstProductQuestion = await alexa.utter("juan");
             assert.include(firstProductQuestion.response.outputSpeech.ssml, "Guess the price");
+
             const secondProductQuestion = await alexa.utter("200 dollars");
             assert.include(secondProductQuestion.response.outputSpeech.ssml, "the actual price was");
             assert.include(secondProductQuestion.response.outputSpeech.ssml, "Guess the price");
+
             const thirdProductQuestion = await alexa.utter("200 dollars");
             assert.include(thirdProductQuestion.response.outputSpeech.ssml, "the actual price was");
             assert.include(thirdProductQuestion.response.outputSpeech.ssml, "Guess the price");
+
             const gameEndQuestion = await alexa.utter("200 dollars");
             assert.include(gameEndQuestion.response.outputSpeech.ssml, "Game ended, your final score was");
         });
