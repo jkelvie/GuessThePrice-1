@@ -15,7 +15,9 @@ describe("DefaultSkill Test", function() {
 
             let response = alexa.launch().then(function (reply) {
                 assert.include(reply.response.outputSpeech.ssml, "Welcome to guess the price");
-                return alexa.utter("2");
+                return alexa.filter(function (request) {
+                    console.log("Request: " + JSON.stringify(request, null, 2));
+                }).utter("two");
             }).then(function (reply) {
                 assert.include(reply.response.outputSpeech.ssml, "what is your name");
                 assert.include(reply.response.outputSpeech.ssml, "contestant one");
@@ -27,9 +29,7 @@ describe("DefaultSkill Test", function() {
             }).then(function (reply) {
                 assert.include(reply.response.outputSpeech.ssml, "let's start the game");
                 assert.include(reply.response.outputSpeech.ssml, "Guess the price");
-                return alexa.filter(function (request) {
-                    console.log("Request: " + JSON.stringify(request, null, 2));
-                }).utter("200 dollars");
+                return alexa.utter("200 dollars");
             }).then(function (reply) {
                 assert.include(reply.response.outputSpeech.ssml, "the actual price was");
                 done();
