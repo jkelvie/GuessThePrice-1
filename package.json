@@ -12,12 +12,28 @@
     "type": "git",
     "url": "git://github.com/bespoken/guessThePrice.git"
   },
-  "scripts": {
-    "test": "mocha test/*-test.js"
-  },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-plugin-add-header-comment": "^1.0.3",
+    "babel-plugin-array-includes": "^2.0.3",
+    "babel-plugin-transform-es2017-object-entries": "0.0.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
     "mocha": "^3.5.3",
     "virtual-alexa": "^0.3.5"
+  },
+  "scripts": {
+    "pretest": "cd test && babel *.js **/*.js -d ../dist-test",
+    "test": "mocha dist-test/*-test.js",
+    "posttest": "rm -rf dist-test",
+    "build": "npm run build:init && npm run build:js && npm run build:install",
+    "build:init": "rm -rf dist && mkdir dist",
+    "build:js": "babel *.js lib/*.js -d dist",
+    "build:install": "cp package.json dist/ && cd dist && npm install --production",
+    "package": "npm run build && npm run package:pack",
+    "package:pack": "rm -f artifact.zip && cd dist/ && zip -r ../artifact.zip *",
+    "deploy": "npm run package && ask lambda upload -f GuessThePrice -s  artifact.zip"
   }
 }
