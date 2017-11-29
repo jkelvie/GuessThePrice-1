@@ -3,7 +3,7 @@
 
 # Guess The Price
 Showcase for Bespoken Unit-Testing and Integration-Testing tools!
-Also, fun game for guessing prices, akin to the Price Is Right!
+Also, fun game for guessing prices, akin to the Price Is Right!!
 
 ## Continuous Integration
 Done via CircleCI - core testing is here:
