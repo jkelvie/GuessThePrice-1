@@ -44,6 +44,6 @@
     "build:install": "cp package.json dist/ && cd dist && npm install --production",
     "package": "npm run build && npm run package:pack",
     "package:pack": "rm -f artifact.zip && cd dist/ && zip -r ../artifact.zip *",
-    "deploy": "npm run package && ask lambda upload -f GuessThePriceV2 -s  artifact.zip"
+    "deploy": "npm run package && ask lambda upload -f GuessThePrice -s  artifact.zip"
   }
 }
