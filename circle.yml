@@ -17,10 +17,10 @@ deployment:
     branch: master
     commands:
       - npm run integration
-      - deploy.sh Dev
+      - ./deploy.sh Dev
 
   prod:
     tag: /prod-.*/
     commands:
       - npm run integration
-      - deploy.sh Prod
+      - ./deploy.sh Prod
