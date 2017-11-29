@@ -42,11 +42,11 @@ The integration tests are run first and leverage our [Virtual Device SDK](https:
 If they are successful, our deployment script is run.
 
 ### Deployment Script
-We use our script in deploy.sh to orchestrate:
+We use our deploy.sh script to orchestrate:
 * Setting up config files (AWS and ASK)
-* Uploading Lambda
+* Uploading to Lambda
 
-This is done with bash because it is the easiest, most concise way to setup the config files in a prisitine environment.
+This is done with a bash script because of the powerful tools it provides for file manipulation and creation.
 
 These lines setup our AWS and ASK configs from environment variables configured securely in Circle:
 ```
