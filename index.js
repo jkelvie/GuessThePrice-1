@@ -1,4 +1,5 @@
 const Alexa = require('alexa-sdk');
+
 const languageStrings = require('./languageStrings.js');
 const product = require("./lib/products");
 const game = require("./lib/game");
