@@ -2,7 +2,7 @@
 [![codecov](https://codecov.io/gh/bespoken/GuessThePrice/branch/VirtualDeviceSDK/graph/badge.svg)](https://codecov.io/gh/bespoken/GuessThePrice)
 
 # Guess The Price
-Showcase for Bespoken Unit-Testing and Integration-Testing tools!  
+Showcase for Bespoken Unit-Testing and Integration-Testing tools!
 Also, fun game for guessing prices, akin to the Price Is Right!
 
 ## Continuous Integration

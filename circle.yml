@@ -14,7 +14,7 @@ test:
 
 deployment:
   dev:
-    tag: /dev-.*/
+    branch: master
     commands:
       - npm run integration
       - deploy.sh Dev

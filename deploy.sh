@@ -15,4 +15,4 @@ sed -e s/ASK_ACCESS_TOKEN/${ASK_ACCESS_TOKEN}/g -e \
 
 # Create the Lambda upload file and deploy it
 npm run package
-ask lambda upload -f GuessThePrice-Dev -s artifact.zip
+ask lambda upload -f GuessThePrice-$1 -s artifact.zip
