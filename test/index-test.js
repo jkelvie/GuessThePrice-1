@@ -92,8 +92,8 @@ describe("DefaultSkill Test", function() {
         });
     });
 
-    describe("One player Intent", () => {
-        it("Flow works", async function () {
+    describe("Intent tests", () => {
+        it("Handles one player", async function () {
             const alexa = bvd.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
                 .intentSchemaFile("./speechAssets/IntentSchema.json")
@@ -105,6 +105,20 @@ describe("DefaultSkill Test", function() {
 
             const singlePlayerResponse = await alexa.utter("one player");
             assert.include(singlePlayerResponse.response.outputSpeech.ssml, "tell us your name");
+        });
+
+        it("Handles player numbers", async function () {
+            const alexa = bvd.VirtualAlexa.Builder()
+                .handler("index.handler") // Lambda function file and name
+                .intentSchemaFile("./speechAssets/IntentSchema.json")
+                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .create();
+
+            const launchResponse = await alexa.launch();
+            assert.include(launchResponse.response.outputSpeech.ssml, "Welcome to guess the price");
+
+            const singlePlayerResponse = await alexa.utter("there are two players");
+            assert.include(singlePlayerResponse.response.outputSpeech.ssml, "contestant one");
         });
     });
 
