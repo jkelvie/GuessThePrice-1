@@ -13,8 +13,6 @@ dependencies:
     - cat ~/.aws/credentials
 
 test:
-  pre:
-    - npm run typings
   override:
     - npm test
 

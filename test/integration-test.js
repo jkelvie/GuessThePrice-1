@@ -7,7 +7,7 @@ describe("GuessThePrice Integration Test", function() {
     this.timeout(120 * 1000);
 
     describe("Onboarding Test", function () {
-        it("Initial Test successfully", async () => {
+        it("Runs through game with two players", async () => {
             const virtualDevice = new vds.VirtualDevice(process.env.VIRTUAL_DEVICE_TOKEN);
             await virtualDevice.message("alexa exit");
             let result = await virtualDevice.message("open guess the price");
