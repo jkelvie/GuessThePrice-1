@@ -92,6 +92,22 @@ describe("DefaultSkill Test", function() {
         });
     });
 
+    describe("One player Intent", () => {
+        it("Flow works", async function () {
+            const alexa = bvd.VirtualAlexa.Builder()
+                .handler("index.handler") // Lambda function file and name
+                .intentSchemaFile("./speechAssets/IntentSchema.json")
+                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .create();
+
+            const launchResponse = await alexa.launch();
+            assert.include(launchResponse.response.outputSpeech.ssml, "Welcome to guess the price");
+
+            const singlePlayerResponse = await alexa.utter("one player");
+            assert.include(singlePlayerResponse.response.outputSpeech.ssml, "tell us your name");
+        });
+    });
+
     describe("Multiplayer", () => {
         it("Run multiplayer till the end", async function () {
             const alexa = bvd.VirtualAlexa.Builder()
