@@ -11,6 +11,7 @@ index.js.map
 *.tgz
 **/*.d.ts
 skillBotConf.json
+skillbot.json
 
 codeship.aes
 docker/aws.env
