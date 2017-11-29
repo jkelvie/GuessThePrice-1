@@ -29,7 +29,7 @@ describe("GuessThePrice Integration Test", function() {
 
             result = await virtualDevice.message("200 dollars");
             console.log("Result: " + result.transcript);
-            assert.include(result.transcript, "the actual price was");
+            assert.include(result.transcript.toLowerCase(), "the actual price was");
         });
     });
 });
