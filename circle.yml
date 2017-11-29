@@ -1,0 +1,26 @@
+machine:
+  node:
+    version: 6.9.2
+  services:
+    - docker
+
+dependencies:
+  pre:
+    - npm install -g ask-cli
+
+test:
+  override:
+    - npm test
+
+deployment:
+  dev:
+    branch: master
+    commands:
+      - npm run integration
+      - deploy.sh Dev
+
+  prod:
+    tag: /prod-.*/
+    commands:
+      - npm run integration
+      - deploy.sh Prod
