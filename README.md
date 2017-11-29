@@ -48,6 +48,16 @@ We use our script in deploy.sh to orchestrate:
 
 This is done with bash because it is the easiest, most concise way to setup the config files in a prisitine environment.
 
+These lines setup our AWS and ASK configs from environment variables configured securely in Circle:
+```
+echo "[default]" > ~/.aws/credentials
+echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
+echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+
+sed -e s/ASK_ACCESS_TOKEN/${ASK_ACCESS_TOKEN}/g -e \
+    s/ASK_REFRESH_TOKEN/${ASK_REFRESH_TOKEN}/g conf/ask_cli.json > ~/.ask/cli_config
+```
+
 Once done, the ASK CLI is run to deploy the new Lambda version.
 
 See the [entire deploy.sh here](deploy.sh).
