@@ -3,7 +3,7 @@
 
 # Guess The Price
 Showcase for Bespoken Unit-Testing and Integration-Testing tools!
-Also, fun game for guessing prices, akin to Price Is Right!
+Also, fun game for guessing prices, akin to the Price Is Right!
 
 ## Continuous Integration
 Done via CircleCI - core testing is here:
@@ -17,7 +17,7 @@ Look at the [entire circle.yml here](circle.yml).
 
 ## Continuous Deployment
 ### Environment Rules
-We deploy to a dev lambda automatically with every change.
+We deploy to a dev lambda automatically with every commit to master.
 
 Additionally, we deploy to prod for tags that start with "prod-*".
 
@@ -25,7 +25,7 @@ In this way, prod builds are triggered explicitly but easily. The relevant porti
 ```
 deployment:
   dev:
-    branch: /.*/
+    branch: master
     commands:
       - npm run integration
       - deploy.sh Dev

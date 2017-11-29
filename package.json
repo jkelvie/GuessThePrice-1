@@ -35,8 +35,8 @@
   },
   "scripts": {
     "integration": "npm run build:js && mocha dist/test/integration-test.js",
-    "pretest": "cd test && babel *.js **/*.js -d ../dist-test",
-    "test": "nyc mocha dist-test/index-test.js",
+    "pretest": "npm run build:js",
+    "test": "nyc mocha dist/test/index-test.js",
     "posttest": "nyc report --reporter=json && codecov -f coverage/*.json",
     "build": "npm run build:init && npm run build:js && npm run build:install",
     "build:init": "rm -rf dist && mkdir dist",
