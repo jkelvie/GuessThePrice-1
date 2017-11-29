@@ -1,0 +1,32 @@
+machine:
+  node:
+    version: 6.9.2
+  services:
+    - docker
+
+dependencies:
+  pre:
+    - npm install -g ask-cli
+    - mkdir ~/.aws
+    - echo "[default]" > ~/.aws/credentials
+    - echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
+    - cat ~/.aws/credentials
+
+test:
+  pre:
+    - npm run typings
+  override:
+    - npm test
+
+deployment:
+  dev:
+    branch: /.*/
+    commands:
+      - npm run integration
+      - deploy.sh Dev
+
+  prod:
+    tag: /prod-.*/
+    commands:
+      - npm run integration
+      - deploy.sh Prod
