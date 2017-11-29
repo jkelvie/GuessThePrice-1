@@ -8,6 +8,12 @@
     "bespoken-tools": "^1.2.2",
     "dotenv": "^4.0.0"
   },
+  "nyc": {
+    "exclude": [
+      "test/*.js",
+      "dist/test/*.js"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/bespoken/guessThePrice.git"
@@ -21,15 +27,17 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
+    "codecov": "^3.0.0",
     "mocha": "^3.5.3",
+    "nyc": "^11.3.0",
     "virtual-alexa": "^0.3.5",
     "virtual-device-sdk": "^1.0.0"
   },
   "scripts": {
     "integration": "npm run build:js && mocha dist/test/integration-test.js",
     "pretest": "cd test && babel *.js **/*.js -d ../dist-test",
-    "test": "mocha dist-test/index-test.js",
-    "posttest": "rm -rf dist-test",
+    "test": "nyc mocha dist-test/index-test.js",
+    "posttest": "nyc report --reporter=json && codecov -f coverage/*.json",
     "build": "npm run build:init && npm run build:js && npm run build:install",
     "build:init": "rm -rf dist && mkdir dist",
     "build:js": "babel *.js lib/*.js test/*.js -d dist",
