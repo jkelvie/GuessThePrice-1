@@ -1,5 +1,5 @@
 [![CircleCI](https://circleci.com/gh/bespoken/GuessThePrice.svg?style=svg)](https://circleci.com/gh/bespoken/GuessThePrice)
-[![codecov](https://codecov.io/gh/bespoken/GuessThePrice/branch/VirtualDeviceSDK/graph/badge.svg)](https://codecov.io/gh/bespoken/GuessThePrice)
+[![codecov](https://codecov.io/gh/bespoken/GuessThePrice/branch/master/graph/badge.svg)](https://codecov.io/gh/bespoken/GuessThePrice)
 
 # Guess The Price
 Showcase for Bespoken Unit-Testing and Integration-Testing tools!
