@@ -23,8 +23,13 @@ var languageStrings = {
             "GUESS_THE_PRICE_REPROMT": "Please tell us the price for the ",
             "SCORE": "Your score for that answer is ",
             "SKILL_NAME" : "Guess the Price",
+            "HELP_MESSAGE_NUMBER" : "You have to guess a price in dollars close to the actual price, the more closer you get the more points you got. There're three rounds of products. Good luck. How many players are playing today?",
+            "HELP_MESSAGE_PRICE" : "You have to guess a price in dollars close to the actual price, please use dollars without cents. What is the price you have in mind?",
+            "HELP_MESSAGE_NAME" : "You give as your name, and then you can play with friends, what is your name?.",
             "HELP_MESSAGE" : "You have to guess a price in dollars close to the actual price, the more closer you get the more points you got. There're three rounds of products. Good luck.",
-            "HELP_REPROMPT" : "What can I help you with?",
+            "HELP_MESSAGE_NUMBER_REPROMPT" : "How many persons are playing today?",
+            "HELP_MESSAGE_PRICE_REPROMPT" : "What is your price?",
+            "HELP_MESSAGE_NAME_REPROMPT" : "What is your name?",
             "STOP_MESSAGE" : "Goodbye! Hope to see you soon"
         }
     }

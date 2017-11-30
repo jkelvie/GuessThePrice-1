@@ -40,9 +40,6 @@
       ]
     },
     {
-      "intent": "ShowLeaderboard"
-    },
-    {
       "intent": "AMAZON.HelpIntent"
     },
     {

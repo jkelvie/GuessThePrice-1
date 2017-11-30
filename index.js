@@ -1,14 +1,34 @@
 const Alexa = require('alexa-sdk');
+const verifier = require('alexa-verifier');
 const languageStrings = require('./languageStrings.js');
 const product = require("./lib/products");
 const game = require("./lib/game");
 
-exports.handler = function(event, context) {
-    const alexa = Alexa.handler(event, context);
-    // To enable string internationalization (i18n) features, set a resources object.
-    alexa.resources = languageStrings;
-    alexa.registerHandlers(newSessionHandlers, startModeHandlers, setupUsersHandlers, gameRoundHandlers, defaultHandlers);
-    alexa.execute();
+exports.handler = function(event, context, callback) {
+    const signaturecertchainurl = context.request && context.request.headers.signaturecertchainurl;
+    const signature = context.request && context.request.headers.signature;
+    const rawBody = context.request && context.body;
+
+    function verificationCallback(err) {
+        if (process.env.PROD && err) {
+            const response = {
+                statusCode: '401',
+                body: {message: 'Verification Failure', error: err},
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+            context.succeed(response);
+        } else {
+            const alexa = Alexa.handler(event, context);
+            // To enable string internationalization (i18n) features, set a resources object.
+            alexa.resources = languageStrings;
+            alexa.registerHandlers(newSessionHandlers, startModeHandlers, setupUsersHandlers, gameRoundHandlers, defaultHandlers);
+            alexa.execute();
+        }
+    }
+
+    verifier(signaturecertchainurl, signature, rawBody, verificationCallback);
 };
 
 const states = {
@@ -20,11 +40,6 @@ const states = {
 };
 
 const defaultHandlers = {
-    'AMAZON.HelpIntent': function () {
-        const speechOutput = this.t("HELP_MESSAGE");
-        const reprompt = this.t("HELP_MESSAGE");
-        this.emit(':ask', speechOutput, reprompt);
-    },
     'AMAZON.CancelIntent': function () {
         this.emit(':tell', this.t("STOP_MESSAGE"));
     },
@@ -83,7 +98,12 @@ const startModeHandlers = Alexa.CreateStateHandler(states.START_MODE, Object.ass
     },
     'Unhandled': function () {
         this.emit(":ask", this.t("UNHANDLED_QUANTITY"), this.t("UNHANDLED_QUANTITY_REPROMT"));
-    }
+    },
+    'AMAZON.HelpIntent': function () {
+        const speechOutput = this.t("HELP_MESSAGE_NUMBER");
+        const reprompt = this.t("HELP_MESSAGE_NUMBER_REPROMT");
+        this.emit(':ask', speechOutput, reprompt);
+    },
 }, defaultHandlers));
 
 const setupUsersHandlers = Alexa.CreateStateHandler(states.SETUP_USERS, Object.assign({
@@ -127,7 +147,12 @@ const setupUsersHandlers = Alexa.CreateStateHandler(states.SETUP_USERS, Object.a
     },
     'Unhandled': function () {
         this.emit(":ask", this.t("UNHANDLED_USER_NAME"), this.t("UNHANDLED_USER_NAME_REPROMT"));
-    }
+    },
+    'AMAZON.HelpIntent': function () {
+        const speechOutput = this.t("HELP_MESSAGE_NAME");
+        const reprompt = this.t("HELP_MESSAGE_NAME_REPROMPT");
+        this.emit(':ask', speechOutput, reprompt);
+    },
 }, defaultHandlers));
 
 const evaluateUserResponse = function (alexaContext) {
@@ -202,13 +227,20 @@ const evaluateUserResponse = function (alexaContext) {
 };
 
 const gameRoundHandlers = Alexa.CreateStateHandler(states.GAME_ROUND, Object.assign({
-    'GetContestantPrice': function () {
-        evaluateUserResponse(this);
+        'GetContestantPrice': function () {
+            evaluateUserResponse(this);
+        },
+        'GetANumber': function () {
+            evaluateUserResponse(this);
+        },
+        'Unhandled': function () {
+            this.emit(":ask", this.t("UNHANDLED_PRICE"), this.t("UNHANDLED_PRICE_REPROMT"));
+        },
+        'AMAZON.HelpIntent': function () {
+            const speechOutput = this.t("HELP_MESSAGE_PRICE");
+            const reprompt = this.t("HELP_MESSAGE_PRICE_REPROMT");
+            this.emit(':ask', speechOutput, reprompt);
+        },
     },
-    'GetANumber': function () {
-        evaluateUserResponse(this);
-    },
-    'Unhandled': function () {
-        this.emit(":ask", this.t("UNHANDLED_PRICE"), this.t("UNHANDLED_PRICE_REPROMT"));
-    },
-}, defaultHandlers));
+    defaultHandlers));
+
