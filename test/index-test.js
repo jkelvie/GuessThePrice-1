@@ -180,6 +180,62 @@ describe("DefaultSkill Test", function() {
             const endOfGameResponse = await alexa.utter("200 dollars");
             assert.include(endOfGameResponse.response.outputSpeech.ssml, "Game ended, the winner is");
         });
-    })
+    });
+
+    describe("Help responses", () => {
+        it("Help in number state", async function () {
+            const alexa = bvd.VirtualAlexa.Builder()
+                .handler("index.handler") // Lambda function file and name
+                .intentSchemaFile("./speechAssets/IntentSchema.json")
+                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .create();
+
+            const launch = await alexa.launch();
+            assert.include(launch.response.outputSpeech.ssml, "Welcome to guess the price");
+
+            const helpResponse = await alexa.intend("AMAZON.HelpIntent");
+            assert.include(helpResponse.response.outputSpeech.ssml, "How many players are playing today");
+        });
+
+        it("Help in name state", async function () {
+            const alexa = bvd.VirtualAlexa.Builder()
+                .handler("index.handler") // Lambda function file and name
+                .intentSchemaFile("./speechAssets/IntentSchema.json")
+                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .create();
+
+            const launch = await alexa.launch();
+            assert.include(launch.response.outputSpeech.ssml, "Welcome to guess the price");
+
+            const singlePlayerResponse = await alexa.utter("1");
+            assert.include(singlePlayerResponse.response.outputSpeech.ssml, "tell us your name");
+
+            const helpResponse = await alexa.intend("AMAZON.HelpIntent");
+            assert.include(helpResponse.response.outputSpeech.ssml,
+                "You give as your name, and then you can play with friends, what is your name");
+        });
+
+        it("Help in price state", async function () {
+            const alexa = bvd.VirtualAlexa.Builder()
+                .handler("index.handler") // Lambda function file and name
+                .intentSchemaFile("./speechAssets/IntentSchema.json")
+                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .create();
+
+            const launchResponse = await alexa.launch();
+            assert.include(launchResponse.response.outputSpeech.ssml, "Welcome to guess the price");
+
+            const singlePlayerResponse = await alexa.utter("1");
+            assert.include(singlePlayerResponse.response.outputSpeech.ssml, "tell us your name");
+
+            const firstProductQuestion = await alexa.utter("juan");
+            assert.include(firstProductQuestion.response.outputSpeech.ssml, "Guess the price");
+
+            const helpResponse = await alexa.intend("AMAZON.HelpIntent");
+            assert.include(helpResponse.response.outputSpeech.ssml,
+                "use dollars without cents. What is the price you have in mind?");
+
+        });
+    });
 });
 
