@@ -92,7 +92,7 @@ describe("DefaultSkill Test", function() {
         });
     });
 
-    describe("Intent tests", () => {
+    describe("standalone intents", () => {
         it("Handles one player", async function () {
             const alexa = bvd.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
@@ -119,6 +119,18 @@ describe("DefaultSkill Test", function() {
 
             const singlePlayerResponse = await alexa.utter("there are two players");
             assert.include(singlePlayerResponse.response.outputSpeech.ssml, "contestant one");
+        });
+
+        it("Handles help", async function () {
+            const alexa = bvd.VirtualAlexa.Builder()
+                .handler("index.handler") // Lambda function file and name
+                .intentSchemaFile("./speechAssets/IntentSchema.json")
+                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .create();
+
+            await alexa.launch();
+            const singlePlayerResponse = await alexa.utter("help");
+            assert.include(singlePlayerResponse.response.outputSpeech.ssml, "You have to guess a price in dollars");
         });
     });
 

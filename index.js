@@ -23,7 +23,7 @@ exports.handler = function(event, context, callback) {
             const alexa = Alexa.handler(event, context);
             // To enable string internationalization (i18n) features, set a resources object.
             alexa.resources = languageStrings;
-            alexa.registerHandlers(newSessionHandlers, startModeHandlers, setupUsersHandlers, gameRoundHandlers, handlers);
+            alexa.registerHandlers(newSessionHandlers, startModeHandlers, setupUsersHandlers, gameRoundHandlers, defaultHandlers);
             alexa.execute();
         }
     }
@@ -37,6 +37,15 @@ const states = {
     GAME_ROUND: '_GAME_ROUND',
     TELL_SCORE: '_TELL_SCORE',
 
+};
+
+const defaultHandlers = {
+    'AMAZON.CancelIntent': function () {
+        this.emit(':tell', this.t("STOP_MESSAGE"));
+    },
+    'AMAZON.StopIntent': function () {
+        this.emit(':tell', this.t("STOP_MESSAGE"));
+    }
 };
 
 const newSessionHandlers = {
@@ -60,12 +69,14 @@ const askPlayerName = (alexaContext, playerQuantity) => {
 
     alexaContext.attributes["players"] = [];
 
-    const askPlayerName = playerQuantity == 1 ? alexaContext.t("SINGLE_PLAYER_RESPONSE") : alexaContext.t("FIRST_PLAYER_RESPONSE");
+    const askPlayerName = playerQuantity == 1
+        ? alexaContext.t("SINGLE_PLAYER_RESPONSE")
+        : alexaContext.t("FIRST_PLAYER_RESPONSE");
     alexaContext.emit(':ask', askPlayerName, alexaContext.t("REPROMT_FIRST_PLAYER"));
 };
 
 
-const startModeHandlers = Alexa.CreateStateHandler(states.START_MODE, {
+const startModeHandlers = Alexa.CreateStateHandler(states.START_MODE, Object.assign({
     'GetPlayerNumber': function () {
         const playerQuantity = this.event.request.intent.slots.Number.value;
 
@@ -93,15 +104,9 @@ const startModeHandlers = Alexa.CreateStateHandler(states.START_MODE, {
         const reprompt = this.t("HELP_MESSAGE_NUMBER_REPROMT");
         this.emit(':ask', speechOutput, reprompt);
     },
-    'AMAZON.CancelIntent': function () {
-        this.emit(':tell', this.t("STOP_MESSAGE"));
-    },
-    'AMAZON.StopIntent': function () {
-        this.emit(':tell', this.t("STOP_MESSAGE"));
-    }
-});
+}, defaultHandlers));
 
-const setupUsersHandlers = Alexa.CreateStateHandler(states.SETUP_USERS, {
+const setupUsersHandlers = Alexa.CreateStateHandler(states.SETUP_USERS, Object.assign({
     'GetContestantName': function () {
         const playerName = this.event.request.intent.slots.PlayerName.value;
         const currentPlayer = this.attributes["currentPlayerSetup"];
@@ -148,13 +153,7 @@ const setupUsersHandlers = Alexa.CreateStateHandler(states.SETUP_USERS, {
         const reprompt = this.t("HELP_MESSAGE_NAME_REPROMPT");
         this.emit(':ask', speechOutput, reprompt);
     },
-    'AMAZON.CancelIntent': function () {
-        this.emit(':tell', this.t("STOP_MESSAGE"));
-    },
-    'AMAZON.StopIntent': function () {
-        this.emit(':tell', this.t("STOP_MESSAGE"));
-    }
-});
+}, defaultHandlers));
 
 const evaluateUserResponse = function (alexaContext) {
     const contestantPrice = alexaContext.event.request.intent.slots.Number.value;
@@ -227,39 +226,21 @@ const evaluateUserResponse = function (alexaContext) {
     alexaContext.emit(':askWithCard', speechOutput, repromt, productChoice.name, productChoice.description, imageObj);
 };
 
-const gameRoundHandlers = Alexa.CreateStateHandler(states.GAME_ROUND, {
-    'GetContestantPrice': function () {
-        evaluateUserResponse(this);
+const gameRoundHandlers = Alexa.CreateStateHandler(states.GAME_ROUND, Object.assign({
+        'GetContestantPrice': function () {
+            evaluateUserResponse(this);
+        },
+        'GetANumber': function () {
+            evaluateUserResponse(this);
+        },
+        'Unhandled': function () {
+            this.emit(":ask", this.t("UNHANDLED_PRICE"), this.t("UNHANDLED_PRICE_REPROMT"));
+        },
+        'AMAZON.HelpIntent': function () {
+            const speechOutput = this.t("HELP_MESSAGE_PRICE");
+            const reprompt = this.t("HELP_MESSAGE_PRICE_REPROMT");
+            this.emit(':ask', speechOutput, reprompt);
+        },
     },
-    'GetANumber': function () {
-        evaluateUserResponse(this);
-    },
-    'Unhandled': function () {
-        this.emit(":ask", this.t("UNHANDLED_PRICE"), this.t("UNHANDLED_PRICE_REPROMT"));
-    },
-    'AMAZON.HelpIntent': function () {
-        const speechOutput = this.t("HELP_MESSAGE_PRICE");
-        const reprompt = this.t("HELP_MESSAGE_PRICE_REPROMT");
-        this.emit(':ask', speechOutput, reprompt);
-    },
-    'AMAZON.CancelIntent': function () {
-        this.emit(':tell', this.t("STOP_MESSAGE"));
-    },
-    'AMAZON.StopIntent': function () {
-        this.emit(':tell', this.t("STOP_MESSAGE"));
-    }
-});
+    defaultHandlers));
 
-
-const handlers = {
-    'AMAZON.HelpIntent': function () {
-        const speechOutput = this.t("HELP_MESSAGE");
-        this.emit(':tell', speechOutput);
-    },
-    'AMAZON.CancelIntent': function () {
-        this.emit(':tell', this.t("STOP_MESSAGE"));
-    },
-    'AMAZON.StopIntent': function () {
-        this.emit(':tell', this.t("STOP_MESSAGE"));
-    }
-};

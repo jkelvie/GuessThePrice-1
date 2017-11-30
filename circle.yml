@@ -16,7 +16,6 @@ deployment:
   dev:
     branch: master
     commands:
-      - npm run integration
       - ./deploy.sh Dev
 
   prod:
