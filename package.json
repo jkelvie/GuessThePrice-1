@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "alexa-sdk": "^1.0.21",
+    "alexa-verifier": "^1.0.0",
     "bespoken-tools": "^1.2.2",
     "dotenv": "^4.0.0"
   },
