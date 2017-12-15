@@ -2,9 +2,11 @@ const Alexa = require('alexa-sdk');
 const verifier = require('alexa-verifier');
 const languageStrings = require('./languageStrings.js');
 const product = require("./lib/products");
+const bst = require('bespoken-tools');
 const game = require("./lib/game");
 
-exports.handler = function(event, context, callback) {
+exports.handler = bst.Logless.capture(process.env.BESPOKEN_SECRET_KEY, function (event, context) {
+/* TODO: review issues with spokes and uncomment this code
     const signaturecertchainurl = context.request && context.request.headers.signaturecertchainurl;
     const signature = context.request && context.request.headers.signature;
     const rawBody = context.request && context.body;
@@ -29,7 +31,14 @@ exports.handler = function(event, context, callback) {
     }
 
     verifier(signaturecertchainurl, signature, rawBody, verificationCallback);
-};
+*/
+
+    const alexa = Alexa.handler(event, context);
+    // To enable string internationalization (i18n) features, set a resources object.
+    alexa.resources = languageStrings;
+    alexa.registerHandlers(newSessionHandlers, startModeHandlers, setupUsersHandlers, gameRoundHandlers, defaultHandlers);
+    alexa.execute();
+});
 
 const states = {
     START_MODE: '_START_MODE', // Prompt the user to start or restart the game.
