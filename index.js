@@ -187,6 +187,7 @@ const evaluateUserResponse = function (alexaContext) {
     let nextQuestion;
     if (endOfRound) {
         alexaContext.attributes["currentRound"] = currentRound + 1;
+
         if (currentRound + 1 >= 3) {
             alexaContext.handler.state = states.TELL_SCORE;
             if (alexaContext.attributes["playerQuantity"] == 1) {
@@ -207,8 +208,10 @@ const evaluateUserResponse = function (alexaContext) {
                     "Game ended, the winner is " + winner.name + " with " + winner.finalScore + " points. Congratulations!";
                 alexaContext.emit(':tell', finalResults);
             }
+            return;
         }
     }
+
     if (alexaContext.attributes["playerQuantity"] == 1) {
         nextQuestion = "Your next product is ";
     } else {
