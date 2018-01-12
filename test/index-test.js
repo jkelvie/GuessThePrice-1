@@ -1,14 +1,14 @@
 require("babel-polyfill");
 const assert = require("chai").assert;
-const bvd = require("virtual-alexa");
+const vax = require("virtual-alexa");
 
 describe("DefaultSkill Test", function() {
     this.timeout(10000);
 
     describe("Onboarding Tests", function () {
         it("Launches successfully", async function() {
-            const bvd = require("virtual-alexa");
-            const alexa = bvd.VirtualAlexa.Builder()
+            const vax = require("virtual-alexa");
+            const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
                 .intentSchemaFile("./speechAssets/IntentSchema.json")
                 .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
@@ -36,7 +36,7 @@ describe("DefaultSkill Test", function() {
         });
 
         it("Accepts responses without dollars", async function () {
-            const alexa = bvd.VirtualAlexa.Builder()
+            const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
                 .intentSchemaFile("./speechAssets/IntentSchema.json")
                 .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
@@ -64,7 +64,7 @@ describe("DefaultSkill Test", function() {
 
     describe("One player", () => {
         it("Flow works", async function () {
-            const alexa = bvd.VirtualAlexa.Builder()
+            const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
                 .intentSchemaFile("./speechAssets/IntentSchema.json")
                 .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
@@ -94,7 +94,7 @@ describe("DefaultSkill Test", function() {
 
     describe("standalone intents", () => {
         it("Handles one player", async function () {
-            const alexa = bvd.VirtualAlexa.Builder()
+            const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
                 .intentSchemaFile("./speechAssets/IntentSchema.json")
                 .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
@@ -108,7 +108,7 @@ describe("DefaultSkill Test", function() {
         });
 
         it("Handles player numbers", async function () {
-            const alexa = bvd.VirtualAlexa.Builder()
+            const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
                 .intentSchemaFile("./speechAssets/IntentSchema.json")
                 .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
@@ -122,7 +122,7 @@ describe("DefaultSkill Test", function() {
         });
 
         it("Handles help", async function () {
-            const alexa = bvd.VirtualAlexa.Builder()
+            const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
                 .intentSchemaFile("./speechAssets/IntentSchema.json")
                 .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
@@ -136,7 +136,7 @@ describe("DefaultSkill Test", function() {
 
     describe("Multiplayer", () => {
         it("Run multiplayer till the end", async function () {
-            const alexa = bvd.VirtualAlexa.Builder()
+            const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
                 .intentSchemaFile("./speechAssets/IntentSchema.json")
                 .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
@@ -184,7 +184,7 @@ describe("DefaultSkill Test", function() {
 
     describe("Help responses", () => {
         it("Help in number state", async function () {
-            const alexa = bvd.VirtualAlexa.Builder()
+            const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
                 .intentSchemaFile("./speechAssets/IntentSchema.json")
                 .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
@@ -198,7 +198,7 @@ describe("DefaultSkill Test", function() {
         });
 
         it("Help in name state", async function () {
-            const alexa = bvd.VirtualAlexa.Builder()
+            const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
                 .intentSchemaFile("./speechAssets/IntentSchema.json")
                 .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
@@ -216,7 +216,7 @@ describe("DefaultSkill Test", function() {
         });
 
         it("Help in price state", async function () {
-            const alexa = bvd.VirtualAlexa.Builder()
+            const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
                 .intentSchemaFile("./speechAssets/IntentSchema.json")
                 .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
