@@ -1,0 +1,87 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "guess the price",
+            "intents": [
+                {
+                    "name": "GetOnePlayer",
+                    "slots": [],
+                    "samples": [
+                        "Just one",
+                        "One player",
+                        "One"
+                    ]
+                },
+                {
+                    "name": "GetANumber",
+                    "slots": [
+                        {
+                            "name": "Number",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "{Number}"
+                    ]
+                },
+                {
+                    "name": "GetPlayerNumber",
+                    "slots": [
+                        {
+                            "name": "Number",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "There are {Number} players"
+                    ]
+                },
+                {
+                    "name": "GetContestantName",
+                    "slots": [
+                        {
+                            "name": "PlayerName",
+                            "type": "AMAZON.US_FIRST_NAME"
+                        }
+                    ],
+                    "samples": [
+                        "My name is {PlayerName}",
+                        "I am {PlayerName}",
+                        "{PlayerName}"
+                    ]
+                },
+                {
+                    "name": "GetContestantPrice",
+                    "slots": [
+                        {
+                            "name": "Number",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "My price is {Number}",
+                        "I think is {Number}",
+                        "I choose {Number}",
+                        "{Number} dollars",
+                        "My price is {Number} dollars",
+                        "I think is {Number} dollars",
+                        "I choose {Number} dollars"
+                    ]
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                }
+            ],
+            "types": []
+        }
+    }
+}

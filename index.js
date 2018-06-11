@@ -110,7 +110,7 @@ const startModeHandlers = Alexa.CreateStateHandler(states.START_MODE, Object.ass
     },
     'AMAZON.HelpIntent': function () {
         const speechOutput = this.t("HELP_MESSAGE_NUMBER");
-        const reprompt = this.t("HELP_MESSAGE_NUMBER_REPROMT");
+        const reprompt = this.t("HELP_MESSAGE_NUMBER_REPROMPT");
         this.emit(':ask', speechOutput, reprompt);
     },
 }, defaultHandlers));

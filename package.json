@@ -4,9 +4,9 @@
   "description": "Guess The Price as closer as you can Alexa Skill",
   "main": "index.js",
   "dependencies": {
-    "alexa-sdk": "^1.0.21",
+    "alexa-sdk": "^1.0.25",
     "alexa-verifier": "^1.0.0",
-    "bespoken-tools": "^1.2.3",
+    "bespoken-tools": "^1.2.11",
     "dotenv": "^4.0.0"
   },
   "nyc": {
@@ -28,11 +28,11 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
-    "codecov": "^3.0.0",
+    "codecov": "^3.0.2",
     "mocha": "^3.5.3",
-    "nyc": "^11.3.0",
-    "virtual-alexa": "^0.3.5",
-    "virtual-device-sdk": "^1.0.0"
+    "nyc": "^11.9.0",
+    "virtual-alexa": "^0.6.5",
+    "virtual-device-sdk": "^1.4.9"
   },
   "scripts": {
     "integration": "npm run build:js && mocha dist/test/integration-test.js",

@@ -10,14 +10,13 @@ describe("DefaultSkill Test", function() {
             const vax = require("virtual-alexa");
             const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
-                .intentSchemaFile("./speechAssets/IntentSchema.json")
-                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .interactionModelFile("./models/en-US.json")
                 .create();
 
             let reply = await alexa.launch();
             assert.include(reply.response.outputSpeech.ssml, "Welcome to guess the price");
 
-            reply = await alexa.utter("two");
+            reply = await alexa.utter("2");
             assert.include(reply.response.outputSpeech.ssml, "what is your name");
             assert.include(reply.response.outputSpeech.ssml, "contestant one");
 
@@ -38,8 +37,7 @@ describe("DefaultSkill Test", function() {
         it("Accepts responses without dollars", async function () {
             const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
-                .intentSchemaFile("./speechAssets/IntentSchema.json")
-                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .interactionModelFile("./models/en-US.json")
                 .create();
 
             const launchResponse = await alexa.launch();
@@ -66,8 +64,7 @@ describe("DefaultSkill Test", function() {
         it("Flow works", async function () {
             const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
-                .intentSchemaFile("./speechAssets/IntentSchema.json")
-                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .interactionModelFile("./models/en-US.json")
                 .create();
 
             const launchResponse = await alexa.launch();
@@ -96,8 +93,7 @@ describe("DefaultSkill Test", function() {
         it("Handles one player", async function () {
             const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
-                .intentSchemaFile("./speechAssets/IntentSchema.json")
-                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .interactionModelFile("./models/en-US.json")
                 .create();
 
             const launchResponse = await alexa.launch();
@@ -110,8 +106,7 @@ describe("DefaultSkill Test", function() {
         it("Handles player numbers", async function () {
             const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
-                .intentSchemaFile("./speechAssets/IntentSchema.json")
-                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .interactionModelFile("./models/en-US.json")
                 .create();
 
             const launchResponse = await alexa.launch();
@@ -124,8 +119,7 @@ describe("DefaultSkill Test", function() {
         it("Handles help", async function () {
             const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
-                .intentSchemaFile("./speechAssets/IntentSchema.json")
-                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .interactionModelFile("./models/en-US.json")
                 .create();
 
             await alexa.launch();
@@ -138,8 +132,7 @@ describe("DefaultSkill Test", function() {
         it("Run multiplayer till the end", async function () {
             const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
-                .intentSchemaFile("./speechAssets/IntentSchema.json")
-                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .interactionModelFile("./models/en-US.json")
                 .create();
 
             const launchRequest = await alexa.launch();
@@ -186,8 +179,7 @@ describe("DefaultSkill Test", function() {
         it("Help in number state", async function () {
             const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
-                .intentSchemaFile("./speechAssets/IntentSchema.json")
-                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .interactionModelFile("./models/en-US.json")
                 .create();
 
             const launch = await alexa.launch();
@@ -200,8 +192,7 @@ describe("DefaultSkill Test", function() {
         it("Help in name state", async function () {
             const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
-                .intentSchemaFile("./speechAssets/IntentSchema.json")
-                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .interactionModelFile("./models/en-US.json")
                 .create();
 
             const launch = await alexa.launch();
@@ -218,8 +209,7 @@ describe("DefaultSkill Test", function() {
         it("Help in price state", async function () {
             const alexa = vax.VirtualAlexa.Builder()
                 .handler("index.handler") // Lambda function file and name
-                .intentSchemaFile("./speechAssets/IntentSchema.json")
-                .sampleUtterancesFile("./speechAssets/SampleUtterances.txt")
+                .interactionModelFile("./models/en-US.json")
                 .create();
 
             const launchResponse = await alexa.launch();
