@@ -6,7 +6,7 @@
   "dependencies": {
     "alexa-sdk": "^1.0.25",
     "alexa-verifier": "^1.0.0",
-    "bespoken-tools": "^1.2.11",
+    "bespoken-tools": "2.0.5",
     "dotenv": "^4.0.0"
   },
   "nyc": {
@@ -35,13 +35,13 @@
     "virtual-device-sdk": "^1.4.9"
   },
   "scripts": {
-    "integration": "npm run build:js && mocha dist/test/integration-test.js",
+    "integration": "npm run build:js && bst test test",
     "pretest": "npm run build:js",
-    "test": "nyc mocha dist/test/index-test.js",
+    "test": "bst test test",
     "posttest": "nyc report --reporter=json && codecov -f coverage/*.json",
     "build": "npm run build:init && npm run build:js && npm run build:install",
     "build:init": "rm -rf dist && mkdir dist",
-    "build:js": "babel *.js lib/*.js test/*.js -d dist",
+    "build:js": "babel *.js lib/*.js -d dist",
     "build:install": "cp package.json dist/ && cd dist && npm install --production",
     "package": "npm run build && npm run package:pack",
     "package:pack": "rm -f artifact.zip && cd dist/ && zip -r ../artifact.zip *",
