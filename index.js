@@ -250,7 +250,7 @@ const gameRoundHandlers = Alexa.CreateStateHandler(states.GAME_ROUND, Object.ass
         },
         'AMAZON.HelpIntent': function () {
             const speechOutput = this.t("HELP_MESSAGE_PRICE");
-            const reprompt = this.t("HELP_MESSAGE_PRICE_REPROMT");
+            const reprompt = this.t("HELP_MESSAGE_PRICE_REPROMPT");
             this.emit(':ask', speechOutput, reprompt);
         },
     },

@@ -1,0 +1,203 @@
+#=====================================================================================================================
+#     ______    _ ____  ______        __  _
+#    / __/ /__ (_) / / /_  __/__ ___ / /_(_)__  ___ _
+#   _\ \/  '_// / / /   / / / -_|_-</ __/ / _ \/ _ `/
+#  /___/_/\_\/_/_/_/   /_/  \__/___/\__/_/_//_/\_, /
+#                                             /___/
+#
+# Created by Bespoken
+# Learn more at https://read.bespoken.io/unit-testing/getting-started/
+# >>> If you need assistance please chat with us here: https://apps.bespoken.io/dashboard (lower right-hand corner)
+#
+# Skill name: "Guess the Price" by Bespoken
+# Test scope: LaunchRequest and intents: GetOnePlayer, GetANumber,GetPlayerNumber, GetContestantName, GetContestantPrice,
+#             AMAZON.HelpIntent, AMAZON.StopIntent and AMAZON.CancelIntent
+# Description: General test suite for all intents
+#=====================================================================================================================
+
+---
+configuration:
+  locale: en-US
+
+---
+- test: "Sequence 01. Test scenario: launch request, no further interaction." # Some metadata about this test sequence
+- LaunchRequest: # LaunchRequest is not an utterance but a request type and "reserved" word
+  - response.outputSpeech.ssml: "/.*how many persons are playing today.*/i" # Regular expression with case insensitive flag
+  - response.reprompt.outputSpeech.ssml: "/.*can you tell us how many persons are playing.*/i" # Shorthand for this is "prompt"
+  - response.shouldEndSession: "false"
+  - sessionAttributes.STATE: "_START_MODE" # You can also access the sessionAttributes items
+
+---
+- test: "Sequence 02. Test scenario: launch request, play once with one player and fails."
+- LaunchRequest: "*" # We don't care here about the actual response, we have already tested that
+- one:
+  - response.outputSpeech.ssml: "/.*please tell us your name.*/i"
+  - response.reprompt.outputSpeech.ssml: "/.*what is your name.*/i" # Shorthand for this is "reprompt"
+  - response.shouldEndSession: "false"
+  - sessionAttributes.playerQuantity: 1
+  - sessionAttributes.currentPlayerSetup: 0
+  - sessionAttributes.STATE: "_SETUP_USERS"
+- jordi:
+  - response.outputSpeech.ssml: "/.*let's start the game: jordi your product is .* guess the price.*/i"
+  - response.shouldEndSession: "false"
+  - response.reprompt.outputSpeech.ssml: "/.*let's start the game: jordi your product is .* guess the price.*/i"
+  - response.card.type: "Standard" # Accessing the card object
+  - response.card.title: "Fitbit Charge 2 HR"
+  - response.card.image.largeImageUrl: "https://images-na.ssl-images-amazon.com/images/I/51NC9OeIr7L._SL1080_.jpg"
+  - response.card.text: "A wristband worn health tracker and heart rate monitor, Fitbit Charge 2 HR helps you maximize your workout, better track calorie burn, get a snapshot of your cardio fitness and track  your sleep."
+  - sessionAttributes.playerQuantity: 1
+  - sessionAttributes.currentPlayerSetup: 0
+  - sessionAttributes.STATE: "_GAME_ROUND"
+  - sessionAttributes.players[0].name: "jordi" # Accessing an object within the sessionAttributes
+  - sessionAttributes.currentPlayerGame: 0
+  - sessionAttributes.currentProduct.price: 149
+  - sessionAttributes.currentRound: 0
+- 240:
+  - response.outputSpeech.ssml: "/.*you said 240 , the actual price was 149 dollars. your score for that answer is 0 points. your next product is .* guess the price.*/i"
+  - response.reprompt.outputSpeech.ssml: "/.*please tell us the price for .*/i"
+  - response.shouldEndSession: "false"
+  - sessionAttributes.playerQuantity: 1
+  - sessionAttributes.currentPlayerSetup: 0
+  - sessionAttributes.STATE: "_GAME_ROUND"
+  - sessionAttributes.players[0].name: "jordi"
+  - sessionAttributes.players[0].score: 0
+  - sessionAttributes.currentPlayerGame: 0
+  - sessionAttributes.currentRound: 1
+- stop: "*"
+
+---
+- test: "Sequence 03. Test scenario: launch request, play once with one player, win and stop."
+- LaunchRequest: "*"
+- one: "*"
+- jordi: "*"
+- 149:
+  - response.outputSpeech.ssml: "/.*you said 149 , the actual price was 149 dollars. your score for that answer is 1000 points. your next product is .* guess the price.*/i"
+  - response.reprompt.outputSpeech.ssml: "/.*please tell us the price for .*/i"
+  - response.shouldEndSession: "false"
+  - sessionAttributes.playerQuantity: 1
+  - sessionAttributes.currentPlayerSetup: 0
+  - sessionAttributes.STATE: "_GAME_ROUND"
+  - sessionAttributes.players[0].name: "jordi"
+  - sessionAttributes.players[0].score: 1000
+  - sessionAttributes.currentPlayerGame: 0
+  - sessionAttributes.currentRound: 1
+- stop:
+  - response.outputSpeech.ssml: "/.*hope to see you soon.*/i"
+
+---
+- test: "Sequence 04. Test scenario: launch request, play several times with one player, finish the game."
+- LaunchRequest: "*"
+- one: "*"
+- jordi: "*"
+- 149: "*"
+- 23: "*"
+- 1233:
+  - response.outputSpeech.ssml: "Game ended, your final score was: 1000"
+  - sessionAttributes.playerQuantity: 1
+  - sessionAttributes.currentPlayerSetup: 0
+  - sessionAttributes.STATE: "_TELL_SCORE"
+  - sessionAttributes.players[0].name: "jordi"
+  - sessionAttributes.players[0].score[0]: 1000 # Nested objects within sessionAttributes
+  - sessionAttributes.players[0].score[1]: 0
+  - sessionAttributes.players[0].score[2]: 0
+  - sessionAttributes.currentPlayerGame: 0
+  - sessionAttributes.currentRound: 3
+
+---
+- test: "Sequence 05. Test scenario: launch request, play once with two players and stop. Focus on user interaction."
+- LaunchRequest: "how many persons are playing today"
+- 2: "contestant one please tell us, what is your name"
+- jordi: "Contestant 2 please tell us, what is your name"
+- caterina: "let's start the game: jordi your product is * Guess the price"
+- 149: "you said 149 , the actual price was 149 dollars. Your score for that answer is 1000 points. Now is caterina turn"
+- 4143: "Now is jordi turn. Your next product is"
+- stop: "Goodbye!"
+
+---
+- test: "Sequence 06. Test scenario: launch request, play several times with one player, finish the game."
+- LaunchRequest: "*"
+- 2: "*"
+- jordi: "*"
+- caterina: "*"
+- 149: "*"
+- 23: "*"
+- 1233: "*"
+- 32541: "*"
+- 3658: "*"
+- 32:
+  - response.outputSpeech.ssml: "Game ended, the winner is jordi with 1000 points. Congratulations!"
+  - sessionAttributes.playerQuantity: 2
+  - sessionAttributes.currentPlayerSetup: 1
+  - sessionAttributes.STATE: "_TELL_SCORE"
+  - sessionAttributes.players[0].name: "jordi"
+  - sessionAttributes.players[0].score[0]: 1000
+  - sessionAttributes.players[0].score[1]: 0
+  - sessionAttributes.players[0].score[2]: 0
+  - sessionAttributes.players[1].name: "caterina"
+  - sessionAttributes.players[1].score[0]: 0
+  - sessionAttributes.players[1].score[1]: 0
+  - sessionAttributes.players[1].score[2]: 0
+  - sessionAttributes.currentPlayerGame: 1
+  - sessionAttributes.currentRound: 3
+
+---
+- test: "Sequence 07. Test scenario: launch request, play and say an unexpected utterance and cancel."
+- LaunchRequest: "*"
+- bananas:
+  - response.outputSpeech.ssml: "We didn't get you correctly, please tell us how many persons are playing?"
+  - response.reprompt.outputSpeech.ssml: "How many persons are playing?"
+- cancel:
+  - response.outputSpeech.ssml: "/.*hope to see you soon.*/i"
+
+---
+- test: "Sequence 08. Test scenario: launch request, ask for help before start playing and stop."
+- LaunchRequest: "*"
+- help:
+  - response.outputSpeech.ssml: "/.*you have to guess a price in dollars.*/i"
+  - response.reprompt.outputSpeech.ssml: "/.*how many persons are playing today.*/i"
+- stop:
+  - response.outputSpeech.ssml: "/.*hope to see you soon.*/i"
+
+---
+- test: "Sequence 09. Test scenario: launch request, ask for help when getting the players name and stop."
+- LaunchRequest: "*"
+- one: "*"
+- help:
+  - response.outputSpeech.ssml: "You give as your name, and then you can play with friends, what is your name?"
+  - response.reprompt.outputSpeech.ssml: "What is your name?"
+- stop:
+  - response.outputSpeech.ssml: "/.*hope to see you soon.*/i"
+
+---
+- test: "Sequence 10. Test scenario: launch request, ask for help when playing and stop."
+- LaunchRequest: "*"
+- one: "*"
+- jordi: "*"
+- help:
+  - response.outputSpeech.ssml: "You have to guess a price in dollars close to the actual price"
+  - response.reprompt.outputSpeech.ssml: "What is your price?"
+- stop:
+  - response.outputSpeech.ssml: "/.*hope to see you soon.*/i"
+
+---
+- test: "Sequence 11. Test scenario: launch request, ask for name and provide a number."
+- LaunchRequest: "*"
+- one: "*"
+- 43:
+  - response.outputSpeech.ssml: "We didn't get you correctly, please tell us your name again?"
+  - response.reprompt.outputSpeech.ssml: "What is your name?"
+- stop:
+  - response.outputSpeech.ssml: "/.*hope to see you soon.*/i"
+  - sessionAttributes.STATE: "_SETUP_USERS"
+
+---
+- test: "Sequence 12. Test scenario: launch request, ask for price and provide a word."
+- LaunchRequest: "*"
+- one: "*"
+- jordi: "*"
+- "do you want a beer":
+  - response.outputSpeech.ssml: "We didn't get your price. Please tell us a price in dollars without cents"
+  - response.reprompt.outputSpeech.ssml: "Please tell us a price in dollars without cents"
+- stop:
+  - response.outputSpeech.ssml: "/.*hope to see you soon.*/i"
+  - sessionAttributes.STATE: "_GAME_ROUND"

@@ -1,0 +1,11 @@
+{
+  "handler": "index.js",
+  "locale": "en-US",
+  "trace": "false",
+  "jest": {
+    "silent": true,
+    "collectCoverageFrom": [
+      "index.js"
+    ]
+  }
+}

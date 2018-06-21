@@ -5,21 +5,24 @@ machine:
 dependencies:
   pre:
     - npm install -g ask-cli
+    - npm install -g bespoken-tools@2.0.5
+    - npm install codecov -g
+    - npm install
 
 test:
   override:
-    - npm test
+    - bst test test
+    - codecov
 
 deployment:
   dev:
     branch: master
     commands:
       - ./deploy.sh Dev
-      - npm run integration
+      - bst test test
 
   prod:
     tag: /prod-.*/
     commands:
       - ./deploy.sh Prod
-      - npm run integration
-      
+      - bst test e2e
