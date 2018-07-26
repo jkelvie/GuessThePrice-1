@@ -5,7 +5,7 @@ const product = require("./lib/products");
 const bst = require('bespoken-tools');
 const game = require("./lib/game");
 
-exports.handler = bst.Logless.capture(process.env.BESPOKEN_SECRET_KEY, function (event, context) {
+exports.handler = bst.Logless.capture("d8fb9c10-65be-4f89-be81-fcaa0fdef68e", function (event, context) {
 /* TODO: review issues with spokes and uncomment this code
     const signaturecertchainurl = context.request && context.request.headers.signaturecertchainurl;
     const signature = context.request && context.request.headers.signature;
