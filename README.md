@@ -73,14 +73,14 @@ configuration: # This is the configuration section, you can define your locale o
   locale: en-US
   
 ---
-- test: "Sequence 02. Test scenario: launch request, play once with two players and cancel."
-- LaunchRequest: "how many persons are playing today"
-- 2: "contestant one please tell us, what is your name"
-- jordi: "Contestant 2 please tell us, what is your name"
-- caterina: "let's start the game: jordi your product is Fitbit Charge 2 HR* Guess the price"
-- 149: "you said 149 , the actual price was 149 dollars. Your score for that answer is 1000 points. Now is caterina turn"
-- 4143: "Now is jordi turn. Your next product is"
-- cancel: "Goodbye!"
+- test: Launch request, play once with two players and cancel.
+- LaunchRequest: how many persons are playing today
+- 2: contestant one please tell us, what is your name
+- jordi: Contestant 2 please tell us, what is your name
+- caterina: "let's start the game: jordi your product is Fitbit Charge 2 HR* Guess the price" # Quotes because there is a colon in the right part
+- 149: you said 149 , the actual price was 149 dollars. Your score for that answer is 1000 points. Now is caterina turn
+- 4143: Now is jordi turn. Your next product is
+- cancel: Goodbye!
 ```
 
 ## TODO

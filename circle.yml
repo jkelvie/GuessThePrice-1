@@ -5,7 +5,7 @@ machine:
 dependencies:
   pre:
     - npm install -g ask-cli
-    - npm install -g bespoken-tools@2.0.5
+    - npm install -g bespoken-tools
     - npm install codecov -g
     - npm install
 
